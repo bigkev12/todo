@@ -8,6 +8,7 @@ import initialTasks from './InitialTasks';
 
 function Tasks() {
   const [tasks, setTasks] = useState(initialTasks);
+  const [showCompleted, setshowCompleted] = useState(true);
 
   const TODO_BASE_URL = 'http://localhost:3000/todos';
 
@@ -54,6 +55,18 @@ function Tasks() {
     )
   }
 
+  function onClick() {
+
+    // if (showCompleted === true) {
+    //   setshowCompleted(false)
+    // }
+
+    // if (showCompleted === false) {
+    //   setshowCompleted(true)
+    // }
+    setshowCompleted(!showCompleted)
+  }
+
   function setTodoCompleted(todo) {
     const putBody = JSON.stringify({
       completed: !todo.completed
@@ -83,19 +96,20 @@ function Tasks() {
   return (
     <>
       <div className="Tasks">
-        <h1>Tasks</h1>
+        <h1>The Tasks...</h1>
         <table>
           <thead>
             <tr>
-              <th>Todo ID</th>
-              <th>Title</th>
-              <th>Completed</th>
+              <th>List</th>
+              <th>The Objective</th>
+              <th>Completed?
+              </th>
               <th>Actions</th>
             </tr>
           </thead>
 
           <tbody>
-            {tasks.map((todo) => {
+            {tasks.filter(task => task.completed === showCompleted).map((todo) => {
               return <Todo key={todo.id} todo={todo} deleteTodo={deleteTodo} setTodoCompleted={setTodoCompleted} />
             })}
           </tbody>
@@ -104,6 +118,13 @@ function Tasks() {
 
       <div>
         <TodoForm addTodo={addTodo} />
+      </div>
+
+      <p style={{fontSize: "20px"}}>Filter Completed Tasks...</p>
+      
+
+      <div class="dropdown" style={{ marginTop: 25 }}>
+        <button onClick={onClick} className="btn">{showCompleted ? 'Yes' : 'No'}</button>
       </div>
     </>
   );
